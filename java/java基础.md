@@ -511,3 +511,103 @@ switch (Code.SUCCESS) {
 
 
 ![1613659374944](java基础/1613659374944.png)
+
+## 15 基本类型
+
+(1)byte 一个字节(8位),范围-128到127(2^7-1 ~ -2^7 最高为是符号位)
+
+(2)char (utf-8 数字和英文字符占一个字节,其它字母占两个字节,汉字有的是三个,有的是四个)
+
+(3)short 两个字节(16位),范围-32768 ~ 32767(2^15-1 ~ -2^15)
+
+(4)int 四个字节(32位),范围20多亿(2^31-1 ~ -2^31)
+
+(5)Long 8个字节(64位) ,范围2^63 -1 ~ 2^63
+
+(6)float 单精度4个字节(1位符号位,8位指数位,23为尾数位)  2^128 ~ -2^128约(3.4E38 ~-3.4E38)
+
+​	double 双精度 8个字节(1位符号位,11位指数位,23位尾数位)   2^1024 ~ -2^1024
+
+## 16 重载和重写
+
+- 首先重载是发生在同一个类中的，他的参数个数、参数顺序、参数类型都可以不同，但是重载的方法名必须相同
+
+- 重写的话，一般发生在父子类中，方法名、参数类型、参数列表都必须相同。典型的例子就是定义一个接口，我们去实现一个接口其实就是一种典型的重写。
+
+- 重写的返回类型可以是父类方法返回类型的子类,这时会生成一个桥接方法.使用泛型时也会生成桥接方法;
+
+  ```java
+  public interface SuperClass<T> {
+  
+      T method(T param);
+  
+  }
+  
+  public class SubClass implements SuperClass<String> {
+      public String method(String param) {
+          return param;
+      }
+  }
+  
+  public static void main(String[] args) throws Exception {
+          SuperClass superClass = new SubClass();
+          System.out.println(superClass.method("abc123"));// 调用的是实际的方法
+          System.out.println(superClass.method(new Object()));// 调用的是桥接方法,会强转参数,但是编译不会报错
+      }
+  ```
+
+  
+
+![1613738717189]('java基础'/1613738717189.png)
+
+## 17 integer
+
+```java
+public static void main(String[] args) {
+    Integer s1 = new Integer(128);
+    Integer s2 = new Integer(128);
+
+    Integer s3 = new Integer(127);
+    Integer s4 = new Integer(127);
+    Integer s5 = 127;
+    int s6 = 127;
+    int s7 = 128;
+    Integer s8 = 128;
+    Integer s9 = 128;
+    Integer s10 = 127;
+    //第一种情况：Integer类型的和new Integer（）类型的进行比较永远都是false
+    System.out.println(s5 == s4);//false
+    //第二种情况：如果一个是Integer类型的，一个是int类型的只要是这两个类型进行比较，只要是数值相等就肯定相等
+    System.out.println(s5 == s6); //true
+    System.out.println(s7 == s8);
+    //第三种情况：只要是两个Integer对象都是new出来的Integer对象，比较一律俺对象进行处理
+    System.out.println(s3 == s4); //false
+    System.out.println(s1 == s2); //false
+    System.out.println(s3.equals(s4)); //true
+    System.out.println(s1.equals(s2));//true
+    //第四种情况：也就是最关键的，如果两个都是Inter类型的进行比较的话，那么会先把【-128,127】的都当成一个int常量进行比较
+    //            如果两个Integer类型的数超过这个范围，其实就相当于是还需要按照对象进行比较
+    System.out.println(s8 == s9);//false
+    System.out.println(s5 == s10);//true
+    
+    //int会总动向上转型变成long
+   System.out.println(127 == 127L ); //true
+    System.out.println(128 == 128L); //true
+    //只要有一个是基本类型,另一个就会拆箱至基本类型,然后需要向上转型就向上转型
+    System.out.println(Integer.valueOf(128) == 128L);//true
+    System.out.println(new Integer(128) == 128L);//true
+    System.out.println(128 == new Long(128L));//true
+	//报错两个不同包装类不会拆箱
+    System.out.println(new Integer(128) == new Long(128L));
+}
+
+```
+
+- Boolean：(全部缓存)
+- Byte：(全部缓存)
+- Character(0 ~ 127缓存)
+- Short(-128 — 127缓存)
+- Long(-128 — 127缓存)
+- Integer(-128 — 127缓存) 只有它可以修改缓存范围
+- Float(没有缓存)
+- Doulbe(没有缓存)
