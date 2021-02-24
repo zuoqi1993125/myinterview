@@ -60,7 +60,7 @@ public static void changeEmployee(Employee employee2) {
 
 ## 4.final,finally,finalize
 
-(1)final修饰类,表示无法继承,修饰方法,表示无法被子类重写,修饰变量,表示一旦初始化,就无法被修改(如果是对象变量,表示无法修改指针指向的地址,可以修改堆内存中对象的属性)
+(1)final修饰类,表示无法继承,修饰方法,表示无法被子类重写,修饰变量,表示一旦初始化,就无法被修改(如果是对象变量,表示无法修改指针指向的地址,可以修改堆内存中对象的属性),final修饰普通变量其初始化可以在构造方法中完成,修饰静态变量必须提前初始化
 
 (2)finally 一般跟在try代码块之后,表示一定执行的代码块(无论是否异常),字节码在编译的时候会在所有分支的最后都加上finally代码块
 
@@ -611,3 +611,51 @@ public static void main(String[] args) {
 - Integer(-128 — 127缓存) 只有它可以修改缓存范围
 - Float(没有缓存)
 - Doulbe(没有缓存)
+
+## 18 this,super
+
+(1)this表示当前对象,多在方法内部,super多是引用父类的成员变量
+
+(2)this 构造函数内部,指向当前类的成员变量,也可以指向其他构造函数,super只能指向父类的构造函数
+
+```java
+public Person(String name, int age) {
+    this.name = name;
+    this.age = age;
+}
+```
+
+```java
+class Person{
+    protected String name;
+ 
+    public Person(String name) {
+        this.name = name;
+    }
+ 
+}
+ 
+class Student extends Person{
+    private String name;
+ 
+    public Student(String name, String name1) {
+        super(name);
+        this.name = name1;
+    }
+ 
+    public void getInfo(){
+        System.out.println(this.name);      //Child
+        System.out.println(super.name);     //Father
+    }
+ 
+}
+
+```
+
+##  19 static
+
+(1)类加载时,static修饰的部分,会被分配好空间,static变量可以被后来的操作修改,但是空间不会更改,而且静态代码块只会执行一次;
+
+(2)静态只能访问静态。非静态既可以访问非静态的，也可以访问静态的。
+
+(3) static是被类的实例对象所共享 
